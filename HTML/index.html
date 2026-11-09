@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="LexiCare – Plataforma educativa acessível para estudantes com dislexia e disgrafia.">
+  <meta name="theme-color" content="#1F5FA8">
+  <title>LexiCare – Aprenda com alegria</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/CSS/style.css">
+
+  <!-- Evita "flash" da tela de login para usuários já autenticados -->
+  <script>
+    try {
+      if (localStorage.getItem('lx_user')) document.documentElement.classList.add('logado');
+    } catch (e) {}
+  </script>
+  <script src="/JS/app.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Pular para o conteúdo</a>
+  <noscript>
+    <p class="noscript">O LexiCare precisa de JavaScript para funcionar. Ative o JavaScript no seu navegador.</p>
+  </noscript>
+
+  <!-- ===== Tela de Login / Cadastro ===== -->
+  <div id="auth">
+    <form id="loginForm" aria-labelledby="authTitle">
+      <h1 id="authTitle">LexiCare</h1>
+      <p>Aprenda com alegria</p>
+
+      <label for="nome">Nome</label>
+      <input id="nome" required autocomplete="name" placeholder="Como podemos te chamar?">
+
+      <label for="email">E-mail</label>
+      <input id="email" type="email" required autocomplete="email" placeholder="voce@exemplo.com">
+
+      <label for="tipo">Tipo de transtorno</label>
+      <select id="tipo">
+        <option>Dislexia</option>
+        <option>Disgrafia</option>
+        <option>Ambos</option>
+      </select>
+
+      <p><button type="submit" class="btn-block">Entrar / Cadastrar-se</button></p>
+      <p class="status">Os dados ficam salvos neste dispositivo (modo demonstração) ou na API, se o servidor estiver ligado.</p>
+    </form>
+  </div>
+
+  <!-- ===== Cabeçalho ===== -->
+  <header>
+    <h1>LexiCare<small>Plataforma educativa para dislexia e disgrafia</small></h1>
+    <div class="row">
+      <span id="ola"></span>
+      <button class="alt" id="aMais" aria-label="Aumentar tamanho da fonte">A+</button>
+      <button class="alt" id="sair">Sair</button>
+    </div>
+  </header>
+
+  <!-- ===== Navegação ===== -->
+  <nav role="tablist" id="tabs" aria-label="Navegação principal">
+    <button role="tab" id="tab-home" data-t="home" aria-selected="true" aria-controls="home">Início</button>
+    <button role="tab" id="tab-cal" data-t="cal" aria-selected="false" aria-controls="cal">Calendário</button>
+    <button role="tab" id="tab-lei" data-t="lei" aria-selected="false" aria-controls="lei">Leitura</button>
+    <button role="tab" id="tab-cal2" data-t="cal2" aria-selected="false" aria-controls="cal2">Caligrafia</button>
+    <button role="tab" id="tab-not" data-t="not" aria-selected="false" aria-controls="not">Anotações</button>
+  </nav>
+
+  <!-- ===== Conteúdo ===== -->
+  <main id="main">
+
+    <!-- Início -->
+    <section id="home" class="on" role="tabpanel" aria-labelledby="tab-home">
+      <h2>Olá! <span id="ola2"></span></h2>
+      <p>Tarefas de hoje: <b id="resumo">0</b> · Exercícios feitos: <b id="exs">0</b> · Anotações: <b id="nns">0</b></p>
+      <div class="row">
+        <button data-go="cal">Calendário</button>
+        <button data-go="lei">Exercícios de leitura</button>
+        <button data-go="cal2">Caligrafia</button>
+        <button data-go="not">Anotações</button>
+      </div>
+      <p class="status" id="apiStatus"></p>
+    </section>
+
+    <!-- Calendário -->
+    <section id="cal" role="tabpanel" aria-labelledby="tab-cal">
+      <h2>Calendário</h2>
+      <div class="row">
+        <button class="alt" id="prev" aria-label="Mês anterior">‹</button>
+        <b id="mes" class="mes-atual"></b>
+        <button class="alt" id="next" aria-label="Próximo mês">›</button>
+      </div>
+
+      <div class="grid" id="grid"></div>
+
+      <h3 id="diaSel"></h3>
+      <div id="tarefas"></div>
+
+      <label for="tt">Nova tarefa</label>
+      <input id="tt" maxlength="60" placeholder="Ex: Estudar frações">
+      <div class="row row-add">
+        <input id="th" type="time" class="time-input">
+        <input id="tc" type="color" value="#1F5FA8" class="color-input" aria-label="Cor da tarefa">
+        <button id="addT">Adicionar</button>
+      </div>
+    </section>
+
+    <!-- Leitura -->
+    <section id="lei" role="tabpanel" aria-labelledby="tab-lei">
+      <h2>Exercícios de leitura</h2>
+      <div class="row" id="niveis"></div>
+      <p class="status" id="prog" aria-live="polite"></p>
+      <div class="bar"><b id="barra"></b></div>
+
+      <p class="big" id="pergunta" aria-live="polite"></p>
+      <div class="row center"><button class="alt" id="ouvir">🔊 Ouvir</button></div>
+      <p id="enunciado" class="center"></p>
+
+      <div class="opts" id="opts"></div>
+      <div class="hint" id="dica" hidden role="status" aria-live="polite"></div>
+    </section>
+
+    <!-- Caligrafia -->
+    <section id="cal2" role="tabpanel" aria-labelledby="tab-cal2">
+      <h2>Apoio à caligrafia</h2>
+      <div class="row center">
+        <button class="alt" id="lp" aria-label="Letra anterior">‹</button>
+        <b id="letra" class="letra-titulo"></b>
+        <button class="alt" id="ln" aria-label="Próxima letra">›</button>
+      </div>
+
+      <canvas id="cv" width="420" height="420" aria-label="Área de desenho para praticar caligrafia"></canvas>
+
+      <div class="row center">
+        <button id="avaliar">Avaliar traçado</button>
+        <button class="alt" id="limpar">Reiniciar traçado</button>
+      </div>
+
+      <p id="nota" class="nota-final" aria-live="polite"></p>
+      <div class="hint">Dica: mantenha um ritmo lento e constante. O sistema aceita uma margem de tolerância no traço.</div>
+    </section>
+
+    <!-- Anotações -->
+    <section id="not" role="tabpanel" aria-labelledby="tab-not">
+      <h2>Anotações</h2>
+      <label for="nt">Título</label>
+      <input id="nt" maxlength="32" placeholder="Título da anotação...">
+      <label for="nb">Texto</label>
+      <textarea id="nb" rows="5" placeholder="Escreva aqui..."></textarea>
+
+      <div class="row row-actions">
+        <button class="alt" id="voz">🎤 Gravar áudio</button>
+        <button class="alt" id="corr">✔ Corrigir</button>
+        <button class="alt" id="lerN">🔊 Ouvir</button>
+        <button id="salvarN">Salvar</button>
+      </div>
+
+      <div id="lista"></div>
+    </section>
+
+  </main>
+
+  <div id="toast" role="status" aria-live="polite"></div>
+</body>
+</html>

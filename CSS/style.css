@@ -1,0 +1,369 @@
+/* ============================================================
+   LexiCare — Folha de estilos principal
+   ============================================================ */
+
+/* ===== 1. Variáveis ===== */
+:root {
+  --bg: #FFF8E7;
+  --card: #fff;
+  --ink: #1E1E1E;
+  --mut: #5b5b5b;
+  --blue: #1F5FA8;
+  --blue2: #E3EEFA;
+  --ok: #2E9E5B;
+  --bad: #D64545;
+  --line: #eadfc2;
+  --focus: #F2A900;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #14202E;
+    --card: #1D2D40;
+    --ink: #F4F1E8;
+    --mut: #b8c2cf;
+    --blue: #6FB0FF;
+    --blue2: #243a55;
+    --line: #33475f;
+  }
+}
+
+/* ===== 2. Reset e base ===== */
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  min-height: 100dvh;
+  font-family: Lexend, Verdana, Arial, sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  font-size: 18px;
+  line-height: 1.5;
+  overflow-x: hidden;
+  text-rendering: optimizeLegibility;
+}
+
+button, input, textarea, select { font: inherit; }
+
+/* ===== 3. Botões e inputs ===== */
+button {
+  cursor: pointer;
+  border: 0;
+  border-radius: 14px;
+  padding: 12px 18px;
+  background: var(--blue);
+  color: #fff;
+  font-weight: 600;
+  min-height: 48px;
+  transition: filter .15s ease;
+}
+button:hover:not(:disabled) { filter: brightness(1.08); }
+button:disabled { cursor: not-allowed; opacity: .7; }
+
+button.alt {
+  background: var(--blue2);
+  color: var(--blue);
+}
+
+.btn-block { width: 100%; }
+
+input, textarea, select {
+  width: 100%;
+  padding: 12px;
+  border-radius: 12px;
+  border: 2px solid var(--line);
+  background: var(--bg);
+  color: var(--ink);
+  overflow-wrap: anywhere;
+}
+
+label {
+  display: block;
+  font-weight: 600;
+  margin: 12px 0 4px;
+}
+
+/* ===== 4. Header e navegação ===== */
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 5vw;
+  background: var(--blue);
+  color: #fff;
+  flex-wrap: wrap;
+}
+header h1 { margin: 0; font-size: 1.5rem; }
+header small { opacity: .9; display: block; font-weight: 400; }
+
+nav {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  padding: 14px 5vw;
+  overflow-x: auto;
+}
+nav button {
+  background: var(--card);
+  color: var(--ink);
+  border: 2px solid var(--line);
+  white-space: nowrap;
+}
+nav button[aria-selected="true"] {
+  background: var(--blue);
+  color: #fff;
+  border-color: var(--blue);
+}
+
+/* ===== 5. Layout principal ===== */
+main {
+  padding: 0 5vw 40px;
+  max-width: 1000px;
+  margin: auto;
+}
+
+section {
+  display: none;
+  background: var(--card);
+  border: 2px solid var(--line);
+  border-radius: 20px;
+  padding: 22px;
+}
+section.on { display: block; }
+
+h2 { margin-top: 0; }
+
+.row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.row.center { justify-content: center; }
+.row-add { margin-top: 8px; }
+.row-actions { margin-top: 10px; }
+
+.status { font-size: .8rem; color: var(--mut); }
+.center { text-align: center; }
+
+/* ===== 6. Tela de autenticação ===== */
+#auth {
+  position: fixed;
+  inset: 0;
+  background: var(--bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  z-index: 9;
+}
+#auth form {
+  background: var(--card);
+  padding: 28px;
+  border-radius: 24px;
+  max-width: 420px;
+  width: 100%;
+  border: 2px solid var(--line);
+}
+#auth[hidden] { display: none; }
+#auth h1 { color: var(--blue); margin: 0; }
+
+/* Evita flash do login para usuários já logados */
+.logado #auth { display: none !important; }
+
+/* ===== 7. Calendário ===== */
+.mes-atual { flex: 1; text-align: center; }
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 6px;
+  text-align: center;
+  margin-top: 10px;
+}
+
+.day {
+  padding: 10px 0;
+  border-radius: 12px;
+  background: var(--bg);
+  border: 2px solid transparent;
+  color: var(--ink);
+  min-height: 44px;
+  position: relative;
+}
+.day.today { background: var(--blue); color: #fff; }
+.day.sel { border-color: var(--focus); }
+.day i {
+  position: absolute;
+  bottom: 4px; left: 50%;
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--ok);
+  transform: translateX(-50%);
+}
+
+.task {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  padding: 10px;
+  border-radius: 12px;
+  background: var(--bg);
+  margin: 8px 0;
+  border-left: 8px solid var(--c);
+}
+.task span { flex: 1; overflow-wrap: anywhere; }
+.task input[type="checkbox"] { accent-color: var(--blue); }
+.done span { text-decoration: line-through; opacity: .6; }
+
+.time-input { width: auto !important; }
+.color-input { width: 60px !important; padding: 2px !important; }
+
+/* ===== 8. Exercícios de leitura ===== */
+.big {
+  font-size: 5rem;
+  font-weight: 700;
+  text-align: center;
+  color: var(--blue);
+  margin: 0;
+}
+
+.opts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+  gap: 10px;
+}
+.opts button {
+  background: var(--card);
+  color: var(--ink);
+  border: 2px solid var(--line);
+  font-size: 1.4rem;
+}
+.opts button.ok { background: var(--ok); color: #fff; }
+.opts button.no { background: var(--bad); color: #fff; }
+
+.bar {
+  height: 12px;
+  background: var(--blue2);
+  border-radius: 8px;
+  overflow: hidden;
+}
+.bar b {
+  display: block;
+  height: 100%;
+  background: var(--ok);
+  width: 0;
+  transition: width .3s;
+}
+
+/* ===== 9. Caligrafia ===== */
+.letra-titulo { font-size: 2rem; }
+
+canvas {
+  width: 100%;
+  max-width: 420px;
+  aspect-ratio: 1;
+  background: #fff;
+  border: 2px dashed var(--blue);
+  border-radius: 16px;
+  touch-action: none;
+  display: block;
+  margin: 12px auto;
+  cursor: crosshair;
+}
+
+.nota-final { text-align: center; font-weight: 700; }
+
+/* ===== 10. Anotações ===== */
+.note {
+  padding: 12px;
+  border-radius: 12px;
+  background: var(--bg);
+  margin: 8px 0;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+.note div { flex: 1; overflow-wrap: anywhere; }
+
+/* ===== 11. Componentes ===== */
+.hint {
+  background: var(--blue2);
+  padding: 10px 14px;
+  border-radius: 12px;
+  margin-top: 12px;
+}
+
+#toast {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translate(-50%, 100px);
+  background: var(--ok);
+  color: #fff;
+  padding: 12px 22px;
+  border-radius: 30px;
+  transition: transform .3s;
+  font-weight: 600;
+  pointer-events: none;
+  z-index: 20;
+}
+#toast.show { transform: translate(-50%, 0); }
+
+/* ===== 12. Acessibilidade ===== */
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible,
+[tabindex]:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+}
+
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  background: var(--blue);
+  color: #fff;
+  padding: 10px 16px;
+  z-index: 100;
+  text-decoration: none;
+  border-radius: 0 0 12px 0;
+}
+.skip-link:focus { left: 10px; top: 10px; }
+
+.noscript {
+  padding: 20px;
+  background: var(--focus);
+  color: #000;
+  text-align: center;
+  margin: 0;
+}
+
+/* ===== 13. Responsivo ===== */
+@media (max-width: 480px) {
+  body { font-size: 16px; }
+  .big { font-size: 3.5rem; }
+  .grid { gap: 4px; }
+  .day { padding: 8px 0; min-height: 40px; font-size: .9rem; }
+  nav { padding: 10px 4vw; }
+  main { padding: 0 4vw 30px; }
+  section { padding: 16px; }
+}
+
+/* ===== 14. Preferências do usuário ===== */
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; animation: none !important; }
+  html { scroll-behavior: auto; }
+}
+
+/* ===== 15. Impressão (opcional) ===== */
+@media print {
+  header, nav, #auth, #toast, .row-actions { display: none !important; }
+  section { display: block !important; border: 1px solid #ccc; page-break-inside: avoid; }
+}
